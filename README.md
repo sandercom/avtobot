@@ -188,8 +188,9 @@ CREATE TABLE ads (
 Проект облегчает процесс поиска нужных товаров и услуг на Avito с автоматическим уведомлением в Telegram. Это значительно экономит время и позволяет не упустить выгодные предложения.
 
 ---
+# Запуск
 P.S. Управление реализовано через скрипт avito-bot.sh
-Использование: ./manage.sh {start|stop|restart|status|logs|enable-autostart}
+Использование: ./avito-bot.sh {start|stop|restart|status|logs|enable-autostart}
 
 ---
 
