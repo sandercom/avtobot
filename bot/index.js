@@ -1,7 +1,8 @@
 const TelegramBot = require('node-telegram-bot-api');
-require('dotenv').config();
+const BOT_TOKEN = "7837135515:AAHDwJBJA1aasO4Q-83pMcpieEoR3mcP1rc";
 
-const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
+
+const bot = new TelegramBot(BOT_TOKEN, {polling: true});
 
 const userStates = {};
 const lastHandled = {}; // { telegram_id: { keyword: timestamp } }
