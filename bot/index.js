@@ -10,7 +10,7 @@ if (!token) {
 console.log('✅ Token loaded, length:', token.length);
 const bot = new TelegramBot(token, {polling: true});
 
-#const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
+//const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
 const userStates = {};
 const lastHandled = {}; // { telegram_id: { keyword: timestamp } }
