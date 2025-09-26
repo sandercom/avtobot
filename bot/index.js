@@ -1,7 +1,16 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 
-const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
+const token = process.env.BOT_TOKEN;
+if (!token) {
+  console.error('❌ BOT_TOKEN not found in .env file!');
+  process.exit(1);
+}
+
+console.log('✅ Token loaded, length:', token.length);
+const bot = new TelegramBot(token, {polling: true});
+
+#const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
 const userStates = {};
 const lastHandled = {}; // { telegram_id: { keyword: timestamp } }
