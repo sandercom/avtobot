@@ -1,34 +1,7 @@
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '.env') });
-
-console.log('Явный путь к .env:', path.resolve(__dirname, '.env'));
-console.log('BOT_TOKEN:', process.env.BOT_TOKEN || 'НЕ НАЙДЕН');
-
-// ДИАГНОСТИКА: Проверим что токен загружен
-console.log('=== ЗАГРУЗКА БОТА ===');
-console.log('BOT_TOKEN из .env:', process.env.BOT_TOKEN ? `Есть (${process.env.BOT_TOKEN.length} символов)` : 'НЕТ!');
-
-if (!process.env.BOT_TOKEN) {
-  console.error('❌ ОШИБКА: BOT_TOKEN не найден в .env файле!');
-  console.error('💡 Проверьте что в файле .env есть строка: BOT_TOKEN=ваш_токен');
-  process.exit(1);
-}
-
 const TelegramBot = require('node-telegram-bot-api');
+require('dotenv').config();
 
-// ПЕРЕД созданием бота выведем токен для проверки
-console.log('✅ Токен получен, создаем бота...');
-console.log('Первые 10 символов токена:', process.env.BOT_TOKEN.substring(0, 10) + '...');
-
-try {
-  const bot = new TelegramBot(process.env.BOT_TOKEN, {polling: true});
-  console.log('✅ Бот успешно создан и запущен!');
-
-  // Ваш остальной код ниже...
-
-} catch (error) {
-  console.error('❌ Ошибка создания бота:', error.message);
-}
+const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
 const userStates = {};
 const lastHandled = {}; // { telegram_id: { keyword: timestamp } }
