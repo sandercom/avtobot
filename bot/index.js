@@ -1,4 +1,8 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+
+console.log('Явный путь к .env:', path.resolve(__dirname, '.env'));
+console.log('BOT_TOKEN:', process.env.BOT_TOKEN || 'НЕ НАЙДЕН');
 
 // ДИАГНОСТИКА: Проверим что токен загружен
 console.log('=== ЗАГРУЗКА БОТА ===');
