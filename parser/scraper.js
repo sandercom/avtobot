@@ -5,15 +5,17 @@ async function scrapeAvito(keyword, maxPrice, region = 'novosibirsk') {
   console.log(`👉 Переход по ссылке: ${query}`);
 
   const browser = await puppeteer.launch({
-    headless: 'new',
+    headless: false, // Включаем видимый режим для отладки и обхода антибота
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   try {
-    const page = await browser.newPage();
-    await page.goto(query, { waitUntil: 'domcontentloaded', timeout: 15000 });
 
-    await page.waitForSelector('[data-marker="item"]', { timeout: 5000 });
+  const page = await browser.newPage();
+  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+  await page.goto(query, { waitUntil: 'domcontentloaded', timeout: 40000 });
+  await page.waitForTimeout(3000); // Ждём 3 секунды для полной загрузки
+  await page.waitForSelector('[data-marker="item"]', { timeout: 10000 });
 
     const previews = await page.evaluate(() => {
       return [...document.querySelectorAll('[data-marker="item"]')].map(node => {
