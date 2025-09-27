@@ -4,7 +4,7 @@ const { getFilters, adExists, saveAd } = require('../db/queries');
 const bot = require('../bot/index');
 
 // Каждые 10 минут
-cron.schedule('*/10 * * * *', async () => {
+cron.schedule('*/30 * * * *', async () => {
   console.log('⏱ Запуск cron-задачи: проверка фильтров');
 
   try {
