@@ -56,7 +56,7 @@ async function scrapeAvito(keyword, maxPrice, region = 'novosibirsk') {
       if (ad.title === 'Без названия' || ad.location === 'неизвестно') {
         try {
           const detailPage = await browser.newPage();
-          await detailPage.goto(ad.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+          await detailPage.goto(ad.url, { waitUntil: 'domcontentloaded', timeout: 40000 });
 
           if (ad.title === 'Без названия') {
             const titleDetail = await detailPage.evaluate(() => {
