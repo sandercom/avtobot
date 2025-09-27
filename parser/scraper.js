@@ -4,9 +4,16 @@ async function scrapeAvito(keyword, maxPrice, region = 'novosibirsk') {
   const query = `https://www.avito.ru/${region}?q=${encodeURIComponent(keyword)}`;
   console.log(`👉 Переход по ссылке: ${query}`);
 
+  // Используем прокси, если задано в переменной окружения
+  const proxy = process.env.PROXY_SERVER;
+  const launchArgs = ['--no-sandbox', '--disable-setuid-sandbox'];
+  if (proxy) {
+    launchArgs.push(`--proxy-server=${proxy}`);
+    console.log('Используется прокси:', proxy);
+  }
   const browser = await puppeteer.launch({
-    headless: false, // Включаем видимый режим для отладки и обхода антибота
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    headless: false,
+    args: launchArgs
   });
 
   try {
