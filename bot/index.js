@@ -77,7 +77,7 @@ async function addFilterHandler(msg, match) {
   const now = Date.now();
 
   if (!match[1]) {
-    return bot.sendMessage(msg.chat.id, 'Введите фильтр в формате:\nmacbook, 40000, novosibirsk');
+    return bot.sendMessage(msg.chat.id, 'Введите фильтр в формате:\avto, 40000, novosibirsk');
   }
 
   const parts = match[1].split(',').map(s => s.trim()).filter(Boolean);
