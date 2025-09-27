@@ -2,7 +2,15 @@ const TelegramBot = require('node-telegram-bot-api');
 const BOT_TOKEN = "7837135515:AAHDwJBJA1aasO4Q-83pMcpieEoR3mcP1rc";
 
 
-const bot = new TelegramBot(BOT_TOKEN, {polling: true});
+
+let bot;
+if (require.main === module) {
+  // Если файл запущен напрямую, включаем polling
+  bot = new TelegramBot(BOT_TOKEN, { polling: true });
+} else {
+  // Если импортируется как модуль (например, из cron/job.js), только для отправки сообщений
+  bot = new TelegramBot(BOT_TOKEN);
+}
 
 const userStates = {};
 const lastHandled = {}; // { telegram_id: { keyword: timestamp } }
