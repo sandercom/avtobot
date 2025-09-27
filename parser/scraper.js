@@ -4,16 +4,27 @@ async function scrapeAvito(keyword, maxPrice, region = 'novosibirsk') {
   const query = `https://www.avito.ru/${region}?q=${encodeURIComponent(keyword)}`;
   console.log(`👉 Переход по ссылке: ${query}`);
 
+  // Используем прокси, если задано в переменной окружения
+  const proxy = process.env.PROXY_SERVER;
+  const launchArgs = ['--no-sandbox', '--disable-setuid-sandbox'];
+  if (proxy) {
+    launchArgs.push(`--proxy-server=${proxy}`);
+    console.log('Используется прокси:', proxy);
+  }
   const browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    headless: false,
+    args: launchArgs
   });
 
   try {
     const page = await browser.newPage();
-    await page.goto(query, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    await page.goto(query, { waitUntil: 'domcontentloaded', timeout: 40000 });
 
-    await page.waitForSelector('[data-marker="item"]', { timeout: 5000 });
+    // 🔧 ИСПРАВЛЕНИЕ: Заменяем waitForTimeout на waitFor
+    await page.waitFor(3000); // Ждём 3 секунды для полной загрузки
+
+    await page.waitForSelector('[data-marker="item"]', { timeout: 10000 });
 
     const previews = await page.evaluate(() => {
       return [...document.querySelectorAll('[data-marker="item"]')].map(node => {
@@ -56,7 +67,10 @@ async function scrapeAvito(keyword, maxPrice, region = 'novosibirsk') {
       if (ad.title === 'Без названия' || ad.location === 'неизвестно') {
         try {
           const detailPage = await browser.newPage();
-          await detailPage.goto(ad.url, { waitUntil: 'domcontentloaded', timeout: 10000 });
+          await detailPage.goto(ad.url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+
+          // 🔧 ИСПРАВЛЕНИЕ: Добавляем небольшую задержку для детальной страницы
+          await detailPage.waitFor(2000);
 
           if (ad.title === 'Без названия') {
             const titleDetail = await detailPage.evaluate(() => {
